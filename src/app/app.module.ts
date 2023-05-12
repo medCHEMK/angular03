@@ -8,6 +8,7 @@ import { TeamStatsComponent } from './team-stats/team-stats.component';
 import {FormsModule} from '@angular/forms';
 import { GameResultsComponent } from './game-results/game-results.component';
 import { GameStatsComponent } from './game-stats/game-stats.component';
+import { PopupComponent } from './popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GameStatsComponent } from './game-stats/game-stats.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    PopupComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

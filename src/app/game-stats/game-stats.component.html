@@ -1,16 +1,44 @@
 <div class="row">
   <div class="col-sm-11">
+    <select #conferenceSelect (change)="selectConference(conferenceSelect.value)">
+      <option [value]=null >
+        show all
+      </option>
+      <option [value]="conference.name" *ngFor="let conference of conferences">
+        {{conference.name}}ern Conference
+      </option>
+    </select>
+    <select #divionSelect (change)="selectDivision(divionSelect.value)">
+      <option [value]=null >
+        show all
+      </option>
+      <option  *ngFor="let division of divisions" [value]="division">
+        {{division}}
+      </option>
+    </select>
     <select #teamSelect>
       <option [value]="team.id" *ngFor="let team of teams$ | async">
         {{team.full_name}}
       </option>
     </select>
     <button class="primary" (click)="trackTeam(teamSelect.value)">Track team</button>
+    <select #daysSelect (change)="changeDays(daysSelect.value)" [value]=12 >
+      <option value=6>
+        6
+      </option>
+      <option value=12 >
+        12
+      </option>
+      <option value=20>
+        20
+      </option>
+    </select>
+    <span>days</span>
   </div>
 
 </div>
 <div class="row">
-  <app-team-stats class="col-sm-4" *ngFor="let team of nbaService.getTrackedTeams()" [team]="team">
+  <app-team-stats class="col-sm-4" *ngFor="let team of nbaService.getTrackedTeams()" [team]="team" [numberDays]="numberDays()">
 
   </app-team-stats>
 </div>

@@ -14,6 +14,8 @@ export class NbaService {
   private API_URL = "https://free-nba.p.rapidapi.com";
   trackedTeams: Team[] = [];
 
+  public numberDays : number = 12;
+
   constructor(private http: HttpClient) { }
 
   addTrackedTeam(team: Team): void {
@@ -29,16 +31,16 @@ export class NbaService {
     return this.trackedTeams;
   }
 
-  getAllTeams(): Observable<Team[]> {
+  getAllTeams(conference : string | null = null,division: string | null = null): Observable<Team[]> {
     return this.http.get<{data: Team[]}>(`${this.API_URL}/teams?page=0`,
       {headers: this.headers}).pipe(
-      map(res => res.data)
+      map(res => res.data.filter(team => ((!conference || team.conference === conference) && (!division || team.division === division)) )),
     );
   }
 
-  getLastResults(team: Team, numberOfDays = 12 ): Observable<Game[]> {
-    return this.http.get<{meta: any, data: Game[]}>(`${this.API_URL}/games?page=0${this.getDaysQueryString(numberOfDays)}`,
-      {headers: this.headers, params: {per_page: 12, "team_ids[]": ""+team.id}}).pipe(
+  getLastResults(team: Team): Observable<Game[]> {
+    return this.http.get<{meta: any, data: Game[]}>(`${this.API_URL}/games?page=0${this.getDaysQueryString(this.numberDays)}`,
+      {headers: this.headers, params: {per_page: this.numberDays, "team_ids[]": ""+team.id}}).pipe(
         map(res => res.data)
     );
   }

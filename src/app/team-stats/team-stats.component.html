@@ -1,6 +1,7 @@
+
 <div class="card" *ngIf="games$ | async as games">
   <div>
-    <h3>{{team.full_name}} [{{team.abbreviation}}] <span (click)="nbaService.removeTrackedTeam(team)">&times;</span></h3>
+    <h3>{{team.full_name}} [{{team.abbreviation}}] <span (click)="displayPopup()">&times;</span></h3>
     <h6>{{team.conference}}ern conference</h6>
   </div>
   <hr/>
@@ -8,7 +9,7 @@
     <div class="row">
       <div class="col-sm-6">
         <p>
-          Results of past 12 days:
+          Results of past {{numberDays}} days:
         </p>
         <p>
           <mark class="tag" *ngFor="let result of stats.lastGames" [class]="result">{{result}}</mark>
@@ -25,5 +26,16 @@
   <div>
     <button class="tertiary" [routerLink]=" 'results/'+ team.abbreviation">See game results >></button>
   </div>
+  
 
+
+</div>
+<div class="cont" *ngIf="showPopup === true" >
+  <app-popup   >
+   <h3>Are you sure you want to remove this team</h3>
+
+   <button (click)="hidePopup()">No</button>
+   <button  (click)="nbaService.removeTrackedTeam(team)">yes</button>
+
+  </app-popup>
 </div>
