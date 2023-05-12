@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Team } from '../data.models';
+import { Team, Conference } from '../data.models';
 import { Observable, tap } from 'rxjs';
 import { NbaService } from '../nba.service';
 
@@ -21,7 +21,7 @@ export class GameStatsComponent {
   }
   conference : string  | null= null;
   division: string | null = null;
-  conferences = [
+  conferences : Conference[] = [
     {
       name: 'West',
       divisions: ['Northwest', 'Pacific', 'Southwest'],
@@ -42,7 +42,6 @@ export class GameStatsComponent {
   ];
 
   selectConference(value: string): void {
-    console.log(value);
     if (value == "null") {
       let divisionsList: string[] = [];
       this.conferences.map((conference) => {
@@ -54,7 +53,7 @@ export class GameStatsComponent {
       return;
     }
 
-    this.divisions =this.conferences.find((conference: any) => conference.name === value)?.divisions ||[];
+    this.divisions =this.conferences.find((conference: Conference) => conference.name === value)?.divisions ||[];
     this.conference = value;
     this.division = null;
     this.teams$ = this.nbaService.getAllTeams(this.conference, null);
