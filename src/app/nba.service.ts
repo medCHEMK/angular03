@@ -40,7 +40,7 @@ export class NbaService {
 
   getLastResults(team: Team): Observable<Game[]> {
     return this.http.get<{meta: any, data: Game[]}>(`${this.API_URL}/games?page=0${this.getDaysQueryString(this.numberDays)}`,
-      {headers: this.headers, params: {per_page: this.numberDays, "team_ids[]": ""+team.id}}).pipe(
+      {headers: this.headers, params: {per_page: String(this.numberDays), "team_ids[]": ""+team.id}}).pipe(
         map(res => res.data)
     );
   }

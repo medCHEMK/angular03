@@ -19,8 +19,8 @@ export class GameStatsComponent {
   changeDays(value : string){
     this.nbaService.numberDays = parseInt(value);
   }
-  conference : string = "West";
-  division: string = "Northwest";
+  conference : string  | null= null;
+  division: string | null = null;
   conferences = [
     {
       name: 'West',
@@ -42,24 +42,28 @@ export class GameStatsComponent {
   ];
 
   selectConference(value: string): void {
-    if (!value) {
+    console.log(value);
+    if (value == "null") {
       let divisionsList: string[] = [];
       this.conferences.map((conference) => {
         divisionsList = divisionsList.concat(conference.divisions);
       });
       this.divisions = divisionsList;
+      this.teams$ = this.nbaService.getAllTeams(null, this.division);
+      this.conference = null;
       return;
     }
 
-    this.divisions =
-      this.conferences.find((division: any) => division.name === value)!
-        .divisions;
+    this.divisions =this.conferences.find((conference: any) => conference.name === value)?.divisions ||[];
     this.conference = value;
-    this.teams$ = this.nbaService.getAllTeams(this.conference, this.division);
+    this.division = null;
+    this.teams$ = this.nbaService.getAllTeams(this.conference, null);
   }
 
   selectDivision(value: string): void {
-    this.division = value;
+    let division : string | null = value;
+    if(value == "null"){division = null}
+    this.division = division;
     this.teams$ = this.nbaService.getAllTeams(this.conference, this.division);
   }
 
